@@ -1,5 +1,5 @@
 Use the "Click Here To Type" button to enter the word(s)and click okay.
-Then the table will display the output in the sorted form as per the suggestion mentioned in the programming test.pdf.
+Then the table will display the output in the sorted form.
 
 To remove a particular word click the "Remove" button and enter the word to remove and then click okay.
 
