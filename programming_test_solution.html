@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+table, td {
+    border: 1px solid black;
+	border-collapse: collapse;
+	border-spacing:5px;
+	width:25%
+	
+	}
+	table{
+	margin:10px;
+	}
+	div {color:red;}
+</style>
+</head>
+
+<body>
+
+<p>Click the button to enter the word(s) and click Ok to see the sorted order.</p>
+<button  onclick="getting_user_input()">Click Here To Type</button>
+<p id="demo"></p>
+<p>To remove word from the generated table click "Remove" button</p>
+<button onclick="remove_user_input_word()">Remove</button>
+<div><p id="demo1"></p>
+</div>
+
+<script>
+
+var global_Word;
+
+function design_array(sorted_string_2_array, row_length,string_length){
+	var multiarray=new Array();
+	for(var second_array=0;second_array<row_length;second_array++){
+		multiarray[second_array]=new Array(4);
+		}
+	var diff=row_length*4;
+	var diff=diff-string_length;
+	var count=0;
+	for (var row=0;row<row_length;row++){
+		for(var col=0;col<4;col++){
+		
+			multiarray[row][col]=0;
+		}
+	}
+	if(row_length>1 && diff>0){
+		for(var set=3;set>=1;set--){
+			count++;
+			multiarray[row_length-1][set]=-1;
+			if(count===diff){
+				set=-1;
+				break;
+			}
+		}
+	}
+	var i1=0;
+	for(var col1=0;col1<4;col1++){
+		for(var row1=0;row1<row_length;row1++){
+			if(multiarray[row1][col1]== -1){
+				continue;
+			}
+			else{
+				multiarray[row1][col1]=sorted_string_2_array[i1];
+				i1=i1+1;	
+			}	
+		}
+	}
+	return multiarray;
+}
+
+
+function generate_table(produced_array,row_length){
+
+	var table = document.createElement("table");
+	var i = 0;
+	var j=0;
+	for (var r = 0; r < row_length ; r++) {
+		var row = table.insertRow(r);
+		i=r;
+		for (var c = 0; c < 4; c++) {
+			var cell = row.insertCell(c);
+	  
+			if(produced_array[i][j]!= null && produced_array[i][j]!=-1 && produced_array[i][j]!="undefined"){
+				cell.appendChild(document.createTextNode(produced_array[i][j]));
+			}
+		j=j+1;
+    }
+	j=0;
+	i=i+1;
+	}
+	document.body.appendChild(table);
+	return table;
+}
+
+
+function getting_user_input() {
+	var word = prompt("Please enter word(s)", "");	
+	var string_2_array = word.split(' ');
+	global_Word= string_2_array;
+	var sorted_string_2_array=string_2_array.sort();
+	var string_length=sorted_string_2_array.length;
+	var row_length= Math.ceil(string_length/4);	
+	var produced_array=design_array(sorted_string_2_array,row_length,string_length);	
+	var table=generate_table(produced_array,row_length);
+	document.getElementById("demo").innerHTML = table;
+	}
+
+
+	
+function remove_user_input_word(){
+	var remove_word= prompt("Please enter word to remove", "");
+	var global_word_length=global_Word.length;
+	var check_count=0;
+	var length_after_change=global_word_length;
+	for(var index=0;index<global_word_length;index++){
+		if(global_Word[index]=== remove_word){
+			global_Word[index]=global_Word[global_word_length-1];
+			global_Word.length-=1;
+			length_after_change=global_Word.length;
+			check_count=1;
+			break;
+		}
+	}
+	if(check_count==0){
+		document.getElementById("demo1").innerHTML = "No words matched so nothing changed.";
+	}
+	else{
+		var string_2_array = global_Word;//.split(' ');
+		var sorted_string_2_array=string_2_array.sort();
+		var string_length=length_after_change;
+		var row_length= Math.ceil(string_length/4);
+		var produced_array=design_array(sorted_string_2_array,row_length,string_length);
+		var table=generate_table(produced_array,row_length);
+		document.getElementById("demo1").innerHTML = table;
+	}
+}
+</script>
+</body>
+</html>
+	
